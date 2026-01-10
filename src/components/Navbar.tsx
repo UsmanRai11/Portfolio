@@ -64,7 +64,7 @@ const Navbar = () => {
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
         >
-          AC
+          UA
         </a>
 
         {/* Desktop Navigation */}

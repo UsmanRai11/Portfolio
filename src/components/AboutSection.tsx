@@ -63,8 +63,8 @@ const AboutSection = () => {
               Passionate about building the future
             </h3>
             <p className="text-muted-foreground mb-6 leading-relaxed">
-              I'm a full-stack developer with 5+ years of experience crafting digital solutions 
-              that make a difference. I specialize in building modern web applications using 
+              I'm a Full Stack Developer based in Lahore, Pakistan, passionate about crafting digital 
+              solutions that make a difference. I specialize in building modern web applications using 
               cutting-edge technologies and best practices.
             </p>
             <p className="text-muted-foreground mb-8 leading-relaxed">
