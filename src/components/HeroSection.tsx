@@ -3,7 +3,7 @@ import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ParticleBackground from "./ParticleBackground";
 
-const roles = ["Developer", "Engineer", "Problem Solver", "Creative Coder"];
+const roles = ["Full Stack Developer", "Web Developer", "Problem Solver", "Creative Coder"];
 
 const HeroSection = () => {
   const [currentRole, setCurrentRole] = useState(0);
@@ -47,8 +47,8 @@ const HeroSection = () => {
           </p>
           
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 text-glow">
-            <span className="text-foreground">Alex </span>
-            <span className="text-primary">Chen</span>
+            <span className="text-foreground">Usman </span>
+            <span className="text-primary">Akhtar</span>
           </h1>
           
           <div className="h-16 md:h-20 flex items-center justify-center mb-8">
