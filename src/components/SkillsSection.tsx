@@ -1,4 +1,22 @@
 import { useEffect, useRef, useState } from "react";
+import { 
+  Atom, 
+  FileCode2, 
+  Server, 
+  Database, 
+  Container, 
+  Cloud, 
+  GitBranch, 
+  Workflow,
+  Palette,
+  PenTool,
+  Code2,
+  Layers,
+  Cpu,
+  Zap,
+  Globe,
+  Terminal
+} from "lucide-react";
 
 const skills = [
   { name: "React", level: 95 },
@@ -10,14 +28,28 @@ const skills = [
 ];
 
 const techStack = [
-  "React", "Next.js", "TypeScript", "Node.js", "Python", "PostgreSQL",
-  "MongoDB", "Redis", "Docker", "AWS", "Git", "GraphQL", "REST APIs",
-  "Tailwind CSS", "Figma", "JavaScript"
+  { name: "React", icon: Atom },
+  { name: "Next.js", icon: Layers },
+  { name: "TypeScript", icon: FileCode2 },
+  { name: "Node.js", icon: Server },
+  { name: "Python", icon: Terminal },
+  { name: "PostgreSQL", icon: Database },
+  { name: "MongoDB", icon: Database },
+  { name: "Redis", icon: Zap },
+  { name: "Docker", icon: Container },
+  { name: "AWS", icon: Cloud },
+  { name: "Git", icon: GitBranch },
+  { name: "GraphQL", icon: Workflow },
+  { name: "REST APIs", icon: Globe },
+  { name: "Tailwind", icon: Palette },
+  { name: "Figma", icon: PenTool },
+  { name: "JavaScript", icon: Code2 },
 ];
 
 const SkillsSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [hoveredTech, setHoveredTech] = useState<string | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -37,14 +69,17 @@ const SkillsSection = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Calculate 3D positions for globe
+  // Calculate 3D positions for globe using Fibonacci sphere distribution
   const getGlobePosition = (index: number, total: number) => {
-    const phi = Math.acos(-1 + (2 * index) / total);
-    const theta = Math.sqrt(total * Math.PI) * phi;
+    const goldenRatio = (1 + Math.sqrt(5)) / 2;
+    const i = index + 0.5;
+    
+    const theta = 2 * Math.PI * i / goldenRatio;
+    const phi = Math.acos(1 - 2 * i / total);
     
     const x = Math.cos(theta) * Math.sin(phi);
-    const y = Math.sin(theta) * Math.sin(phi);
-    const z = Math.cos(phi);
+    const y = Math.cos(phi);
+    const z = Math.sin(theta) * Math.sin(phi);
     
     return { x, y, z };
   };
@@ -109,46 +144,76 @@ const SkillsSection = () => {
             </h3>
             
             <div 
-              className="relative w-[320px] h-[320px] md:w-[400px] md:h-[400px] mx-auto perspective-1000"
+              className="relative w-[320px] h-[320px] md:w-[400px] md:h-[400px] mx-auto"
+              style={{ perspective: '1000px' }}
               onMouseEnter={() => setIsPaused(true)}
-              onMouseLeave={() => setIsPaused(false)}
+              onMouseLeave={() => {
+                setIsPaused(false);
+                setHoveredTech(null);
+              }}
             >
               {/* Glowing orb background */}
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 via-transparent to-accent/20 blur-3xl" />
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/10 via-transparent to-accent/10 blur-3xl animate-pulse-slow" />
+              
+              {/* Orbital rings */}
+              <div className="absolute inset-8 border border-primary/10 rounded-full animate-spin-reverse" />
+              <div className="absolute inset-16 border border-primary/5 rounded-full animate-spin-slow" />
               
               {/* Globe container */}
               <div 
-                className={`relative w-full h-full ${isPaused ? '' : 'animate-spin-slow'}`}
-                style={{ transformStyle: 'preserve-3d' }}
+                className="relative w-full h-full globe-rotate"
+                style={{ 
+                  transformStyle: 'preserve-3d',
+                  animationPlayState: isPaused ? 'paused' : 'running'
+                }}
               >
                 {techStack.map((tech, index) => {
                   const pos = getGlobePosition(index, techStack.length);
-                  const radius = 140;
+                  const radius = 150;
                   const x = pos.x * radius;
                   const y = pos.y * radius;
                   const z = pos.z * radius;
+                  const isHovered = hoveredTech === tech.name;
+                  const Icon = tech.icon;
                   
                   return (
                     <div
-                      key={tech}
-                      className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 
-                        px-4 py-2 glass rounded-full text-sm font-medium cursor-pointer
-                        transition-all duration-300 hover:scale-125 hover:bg-primary/30 hover:text-primary hover:box-glow
-                        whitespace-nowrap ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+                      key={tech.name}
+                      className={`absolute left-1/2 top-1/2 flex items-center gap-2
+                        px-3 py-2 rounded-full text-sm font-medium cursor-pointer
+                        transition-all duration-300 ease-out
+                        ${isHovered 
+                          ? 'bg-primary/30 text-primary scale-150 z-50 box-glow border-primary/50' 
+                          : 'glass hover:bg-primary/20 hover:text-primary border-transparent'
+                        }
+                        border backdrop-blur-md
+                        ${isVisible ? 'opacity-100' : 'opacity-0'}`}
                       style={{
                         transform: `translate3d(${x}px, ${y}px, ${z}px) translate(-50%, -50%)`,
-                        transitionDelay: `${500 + index * 50}ms`,
+                        transitionDelay: isHovered ? '0ms' : `${500 + index * 30}ms`,
                         backfaceVisibility: 'visible',
+                        zIndex: isHovered ? 50 : Math.round(z + 150),
                       }}
+                      onMouseEnter={() => setHoveredTech(tech.name)}
+                      onMouseLeave={() => setHoveredTech(null)}
                     >
-                      {tech}
+                      <Icon 
+                        className={`w-4 h-4 transition-all duration-300 ${isHovered ? 'text-primary animate-pulse' : ''}`} 
+                      />
+                      <span className="whitespace-nowrap">{tech.name}</span>
                     </div>
                   );
                 })}
               </div>
               
-              {/* Center glow */}
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-primary/30 rounded-full blur-2xl animate-pulse" />
+              {/* Center glow effect */}
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-primary/20 rounded-full blur-3xl animate-pulse" />
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-primary/40 rounded-full blur-xl" />
+              
+              {/* Floating particles */}
+              <div className="absolute left-1/4 top-1/4 w-2 h-2 bg-primary/60 rounded-full animate-float-1" />
+              <div className="absolute right-1/4 top-1/3 w-1.5 h-1.5 bg-accent/60 rounded-full animate-float-2" />
+              <div className="absolute left-1/3 bottom-1/4 w-1 h-1 bg-primary/40 rounded-full animate-float-3" />
             </div>
           </div>
         </div>
