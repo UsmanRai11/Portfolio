@@ -88,20 +88,20 @@ const Navbar = () => {
                   <Icon className="w-5 h-5" />
                 </button>
                 
-                {/* Hover Tooltip */}
+                {/* Hover Tooltip - Pops Upward */}
                 <div
-                  className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 flex flex-col items-center transition-all duration-300 pointer-events-none ${
+                  className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center transition-all duration-300 pointer-events-none ${
                     hoveredLink === link.label
                       ? "opacity-100 translate-y-0 scale-100"
-                      : "opacity-0 -translate-y-2 scale-90"
+                      : "opacity-0 translate-y-2 scale-90"
                   }`}
                 >
+                  <span className="mb-1 text-xs font-medium text-primary whitespace-nowrap">
+                    {link.label}
+                  </span>
                   <div className="w-10 h-10 rounded-full bg-primary/20 border border-primary/40 backdrop-blur-xl flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.3)]">
                     <Icon className="w-4 h-4 text-primary" />
                   </div>
-                  <span className="mt-1 text-xs font-medium text-primary whitespace-nowrap">
-                    {link.label}
-                  </span>
                 </div>
               </div>
             );
