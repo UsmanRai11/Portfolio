@@ -2,14 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import { Code2, Palette, Zap, Users } from "lucide-react";
 
 const traits = [
-  { icon: Code2, title: "Clean Code", desc: "Writing maintainable, scalable solutions" },
-  { icon: Palette, title: "Creative Design", desc: "Crafting beautiful user experiences" },
-  { icon: Zap, title: "Fast Delivery", desc: "Efficient development without compromise" },
-  { icon: Users, title: "Team Player", desc: "Collaborative and communicative approach" },
+  { icon: Code2, title: "Clean Code", desc: "Writing maintainable, scalable solutions", color: "from-emerald-500 to-teal-500" },
+  { icon: Palette, title: "Creative Design", desc: "Crafting beautiful user experiences", color: "from-purple-500 to-pink-500" },
+  { icon: Zap, title: "Fast Delivery", desc: "Efficient development without compromise", color: "from-amber-500 to-orange-500" },
+  { icon: Users, title: "Team Player", desc: "Collaborative and communicative approach", color: "from-blue-500 to-cyan-500" },
 ];
 
 const AboutSection = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -73,17 +74,73 @@ const AboutSection = () => {
               in continuous learning and pushing the boundaries of what's possible.
             </p>
 
-            <div className="grid grid-cols-2 gap-4">
-              {traits.map(({ icon: Icon, title, desc }, index) => (
+            <div className="grid grid-cols-2 gap-4" style={{ perspective: "1000px" }}>
+              {traits.map(({ icon: Icon, title, desc, color }, index) => (
                 <div
                   key={title}
-                  className={`p-4 glass rounded-xl hover:bg-primary/10 transition-all duration-300 hover:scale-105 cursor-default
+                  className={`relative group cursor-default transition-all duration-500 ease-out
                     ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}
-                  style={{ transitionDelay: `${400 + index * 100}ms` }}
+                  style={{ 
+                    transitionDelay: `${400 + index * 100}ms`,
+                    transformStyle: "preserve-3d"
+                  }}
+                  onMouseEnter={() => setHoveredCard(index)}
+                  onMouseLeave={() => setHoveredCard(null)}
                 >
-                  <Icon className="w-6 h-6 text-primary mb-2" />
-                  <h4 className="font-semibold text-sm text-foreground">{title}</h4>
-                  <p className="text-xs text-muted-foreground">{desc}</p>
+                  <div
+                    className={`p-5 glass rounded-xl border border-border/50 transition-all duration-500 ease-out
+                      ${hoveredCard === index 
+                        ? "shadow-[0_20px_50px_rgba(16,185,129,0.25)] border-primary/50" 
+                        : "shadow-lg"
+                      }`}
+                    style={{
+                      transform: hoveredCard === index 
+                        ? "translateZ(30px) rotateX(-5deg) rotateY(5deg) scale(1.05)" 
+                        : "translateZ(0) rotateX(0) rotateY(0) scale(1)",
+                      transformStyle: "preserve-3d"
+                    }}
+                  >
+                    {/* Gradient background on hover */}
+                    <div 
+                      className={`absolute inset-0 rounded-xl bg-gradient-to-br ${color} transition-opacity duration-500 ease-out
+                        ${hoveredCard === index ? "opacity-10" : "opacity-0"}`}
+                    />
+                    
+                    {/* Icon with 3D effect */}
+                    <div 
+                      className="relative mb-3 transition-all duration-500 ease-out"
+                      style={{
+                        transform: hoveredCard === index ? "translateZ(20px)" : "translateZ(0)"
+                      }}
+                    >
+                      <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${color} flex items-center justify-center
+                        transition-all duration-500 ease-out ${hoveredCard === index ? "shadow-lg" : ""}`}>
+                        <Icon className="w-6 h-6 text-white" />
+                      </div>
+                    </div>
+                    
+                    {/* Content with 3D effect */}
+                    <div
+                      className="relative transition-all duration-500 ease-out"
+                      style={{
+                        transform: hoveredCard === index ? "translateZ(15px)" : "translateZ(0)"
+                      }}
+                    >
+                      <h4 className={`font-semibold text-sm mb-1 transition-colors duration-500
+                        ${hoveredCard === index ? "text-primary" : "text-foreground"}`}>
+                        {title}
+                      </h4>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
+                    </div>
+                    
+                    {/* Shine effect */}
+                    <div 
+                      className={`absolute inset-0 rounded-xl overflow-hidden pointer-events-none transition-opacity duration-500
+                        ${hoveredCard === index ? "opacity-100" : "opacity-0"}`}
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-shimmer" />
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
