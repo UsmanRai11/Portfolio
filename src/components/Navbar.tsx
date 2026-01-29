@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Home, User, Wrench, FolderOpen, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
-  { label: "Projects", href: "#projects" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "#home", icon: Home },
+  { label: "About", href: "#about", icon: User },
+  { label: "Skills", href: "#skills", icon: Wrench },
+  { label: "Projects", href: "#projects", icon: FolderOpen },
+  { label: "Contact", href: "#contact", icon: Mail },
 ];
 
 const Navbar = () => {
@@ -14,19 +15,17 @@ const Navbar = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       
-      // Determine if navbar should be visible
       if (currentScrollY < 50) {
         setIsVisible(true);
       } else if (currentScrollY < lastScrollY) {
-        // Scrolling up
         setIsVisible(true);
       } else if (currentScrollY > lastScrollY) {
-        // Scrolling down
         setIsVisible(false);
         setIsMobileMenuOpen(false);
       }
@@ -41,7 +40,11 @@ const Navbar = () => {
 
   const handleNavClick = (href: string) => {
     setIsMobileMenuOpen(false);
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    if (href === "#home") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -49,7 +52,7 @@ const Navbar = () => {
       isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
     }`}>
       <div
-        className={`flex items-center justify-between gap-2 md:gap-8 px-4 md:px-8 py-3 rounded-full transition-all duration-500 ${
+        className={`flex items-center justify-between gap-2 md:gap-6 px-4 md:px-6 py-3 rounded-full transition-all duration-500 ${
           isScrolled
             ? "glass border border-primary/30 shadow-[0_0_20px_rgba(16,185,129,0.15)]"
             : "glass border border-primary/20"
@@ -67,17 +70,42 @@ const Navbar = () => {
           UA
         </a>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Navigation - Icons Only */}
         <div className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <button
-              key={link.label}
-              onClick={() => handleNavClick(link.href)}
-              className="px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-full transition-all duration-300"
-            >
-              {link.label}
-            </button>
-          ))}
+          {navLinks.map((link) => {
+            const Icon = link.icon;
+            return (
+              <div
+                key={link.label}
+                className="relative"
+                onMouseEnter={() => setHoveredLink(link.label)}
+                onMouseLeave={() => setHoveredLink(null)}
+              >
+                <button
+                  onClick={() => handleNavClick(link.href)}
+                  className="p-3 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-full transition-all duration-300"
+                >
+                  <Icon className="w-5 h-5" />
+                </button>
+                
+                {/* Hover Tooltip */}
+                <div
+                  className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 flex flex-col items-center transition-all duration-300 pointer-events-none ${
+                    hoveredLink === link.label
+                      ? "opacity-100 translate-y-0 scale-100"
+                      : "opacity-0 -translate-y-2 scale-90"
+                  }`}
+                >
+                  <div className="w-10 h-10 rounded-full bg-primary/20 border border-primary/40 backdrop-blur-xl flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                    <Icon className="w-4 h-4 text-primary" />
+                  </div>
+                  <span className="mt-1 text-xs font-medium text-primary whitespace-nowrap">
+                    {link.label}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         {/* Desktop CTA */}
@@ -102,19 +130,23 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <div
         className={`md:hidden fixed top-20 left-4 right-4 glass rounded-2xl border border-primary/20 transition-all duration-300 overflow-hidden ${
-          isMobileMenuOpen ? "max-h-80 opacity-100 translate-y-0" : "max-h-0 opacity-0 -translate-y-4"
+          isMobileMenuOpen ? "max-h-96 opacity-100 translate-y-0" : "max-h-0 opacity-0 -translate-y-4"
         }`}
       >
         <div className="p-4 flex flex-col gap-2">
-          {navLinks.map((link) => (
-            <button
-              key={link.label}
-              onClick={() => handleNavClick(link.href)}
-              className="text-left text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300 py-3 px-4 rounded-xl"
-            >
-              {link.label}
-            </button>
-          ))}
+          {navLinks.map((link) => {
+            const Icon = link.icon;
+            return (
+              <button
+                key={link.label}
+                onClick={() => handleNavClick(link.href)}
+                className="flex items-center gap-3 text-left text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300 py-3 px-4 rounded-xl"
+              >
+                <Icon className="w-5 h-5" />
+                {link.label}
+              </button>
+            );
+          })}
           <Button
             className="bg-primary text-primary-foreground hover:bg-primary/90 w-full rounded-xl mt-2"
             onClick={() => handleNavClick("#contact")}
