@@ -88,33 +88,42 @@ const AboutSection = () => {
                   onMouseLeave={() => setHoveredCard(null)}
                 >
                   <div
-                    className={`p-5 glass rounded-xl border border-border/50 transition-all duration-500 ease-out
+                    className={`p-5 glass rounded-xl border transition-all duration-500 ease-out
                       ${hoveredCard === index 
-                        ? "shadow-[0_20px_50px_rgba(16,185,129,0.25)] border-primary/50" 
-                        : "shadow-lg"
+                        ? "border-primary/60 shadow-[0_0_30px_rgba(16,185,129,0.4),0_0_60px_rgba(16,185,129,0.2),0_20px_40px_rgba(0,0,0,0.3)]" 
+                        : "border-border/50 shadow-lg"
                       }`}
                     style={{
                       transform: hoveredCard === index 
-                        ? "translateZ(30px) rotateX(-5deg) rotateY(5deg) scale(1.05)" 
+                        ? "translateZ(40px) rotateX(-8deg) rotateY(8deg) scale(1.08)" 
                         : "translateZ(0) rotateX(0) rotateY(0) scale(1)",
                       transformStyle: "preserve-3d"
                     }}
                   >
+                    {/* Glow ring effect */}
+                    <div 
+                      className={`absolute -inset-0.5 rounded-xl bg-gradient-to-br ${color} blur-sm transition-opacity duration-500
+                        ${hoveredCard === index ? "opacity-40" : "opacity-0"}`}
+                    />
+                    
+                    {/* Card background */}
+                    <div className="absolute inset-0 rounded-xl bg-background/80 backdrop-blur-xl" />
+                    
                     {/* Gradient background on hover */}
                     <div 
                       className={`absolute inset-0 rounded-xl bg-gradient-to-br ${color} transition-opacity duration-500 ease-out
-                        ${hoveredCard === index ? "opacity-10" : "opacity-0"}`}
+                        ${hoveredCard === index ? "opacity-15" : "opacity-0"}`}
                     />
                     
                     {/* Icon with 3D effect */}
                     <div 
                       className="relative mb-3 transition-all duration-500 ease-out"
                       style={{
-                        transform: hoveredCard === index ? "translateZ(20px)" : "translateZ(0)"
+                        transform: hoveredCard === index ? "translateZ(25px) scale(1.1)" : "translateZ(0) scale(1)"
                       }}
                     >
                       <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${color} flex items-center justify-center
-                        transition-all duration-500 ease-out ${hoveredCard === index ? "shadow-lg" : ""}`}>
+                        transition-all duration-500 ease-out ${hoveredCard === index ? "shadow-[0_0_25px_rgba(16,185,129,0.5)]" : ""}`}>
                         <Icon className="w-6 h-6 text-white" />
                       </div>
                     </div>
@@ -123,22 +132,22 @@ const AboutSection = () => {
                     <div
                       className="relative transition-all duration-500 ease-out"
                       style={{
-                        transform: hoveredCard === index ? "translateZ(15px)" : "translateZ(0)"
+                        transform: hoveredCard === index ? "translateZ(20px)" : "translateZ(0)"
                       }}
                     >
-                      <h4 className={`font-semibold text-sm mb-1 transition-colors duration-500
-                        ${hoveredCard === index ? "text-primary" : "text-foreground"}`}>
+                      <h4 className={`font-semibold text-sm mb-1 transition-all duration-500
+                        ${hoveredCard === index ? "text-primary drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]" : "text-foreground"}`}>
                         {title}
                       </h4>
                       <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
                     </div>
                     
-                    {/* Shine effect */}
+                    {/* Shine sweep effect */}
                     <div 
                       className={`absolute inset-0 rounded-xl overflow-hidden pointer-events-none transition-opacity duration-500
                         ${hoveredCard === index ? "opacity-100" : "opacity-0"}`}
                     >
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-shimmer" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                     </div>
                   </div>
                 </div>
