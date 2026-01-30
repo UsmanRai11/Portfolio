@@ -48,7 +48,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-4 md:pt-6 transition-all duration-300 ${
+    <nav className={`fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-8 md:pt-12 transition-all duration-300 ${
       isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
     }`}>
       <div
@@ -90,18 +90,18 @@ const Navbar = () => {
                 
                 {/* Hover Tooltip - Pops Upward */}
                 <div
-                  className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center transition-all duration-300 pointer-events-none ${
+                  className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-3 flex flex-col items-center transition-all duration-300 pointer-events-none ${
                     hoveredLink === link.label
-                      ? "opacity-100 translate-y-0 scale-100"
-                      : "opacity-0 translate-y-2 scale-90"
+                      ? "opacity-100 -translate-y-1 scale-100"
+                      : "opacity-0 translate-y-2 scale-75"
                   }`}
                 >
-                  <span className="mb-1 text-xs font-medium text-primary whitespace-nowrap">
+                  <div className="w-12 h-12 rounded-full bg-primary/20 border border-primary/40 backdrop-blur-xl flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)] mb-1">
+                    <Icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <span className="text-xs font-medium text-primary whitespace-nowrap">
                     {link.label}
                   </span>
-                  <div className="w-10 h-10 rounded-full bg-primary/20 border border-primary/40 backdrop-blur-xl flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.3)]">
-                    <Icon className="w-4 h-4 text-primary" />
-                  </div>
                 </div>
               </div>
             );
