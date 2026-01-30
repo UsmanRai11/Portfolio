@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Send, Mail, MapPin, Phone, Github, Linkedin, Twitter } from "lucide-react";
+import { Send, Mail, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -37,11 +37,6 @@ const ContactSection = () => {
     { icon: MapPin, label: "Location", value: "Lahore, Pakistan" },
   ];
 
-  const socialLinks = [
-    { icon: Github, href: "#", label: "GitHub" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
-    { icon: Twitter, href: "#", label: "Twitter" },
-  ];
 
   return (
     <section
@@ -137,25 +132,7 @@ const ContactSection = () => {
                 </div>
               </div>
 
-              <div>
-                <h3 className="text-xl font-semibold mb-6 text-foreground">Follow Me</h3>
-                <div className="flex gap-4">
-                  {socialLinks.map(({ icon: Icon, href, label }, index) => (
-                    <a
-                      key={label}
-                      href={href}
-                      className={`w-12 h-12 glass rounded-full flex items-center justify-center hover:bg-primary/20 hover:box-glow transition-all duration-300 hover:scale-110 group
-                        ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}
-                      style={{ transitionDelay: `${800 + index * 100}ms` }}
-                      aria-label={label}
-                    >
-                      <Icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
-                    </a>
-                  ))}
-                </div>
-              </div>
-
-              <div className={`p-6 glass rounded-2xl gradient-border transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`} style={{ transitionDelay: "1000ms" }}>
+              <div className={`p-6 glass rounded-2xl gradient-border transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`} style={{ transitionDelay: "700ms" }}>
                 <p className="text-muted-foreground text-sm leading-relaxed">
                   💡 <span className="text-primary font-medium">Open for opportunities!</span> I'm currently available for freelance projects and full-time positions. Let's discuss how I can help bring your ideas to life.
                 </p>
