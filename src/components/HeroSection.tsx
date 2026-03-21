@@ -37,7 +37,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 md:pt-28">
       <ParticleBackground />
       
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
